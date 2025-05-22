@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ShoppingCart, User, Menu } from "lucide-react";
+import { ShoppingCart, User, Menu, Lock } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import CartDrawer from "../cart/CartDrawer";
 import { Badge } from "@/components/ui/badge";
@@ -35,6 +35,9 @@ const Navbar = () => {
           </Link>
           <Link to="/about" className="text-sm font-medium transition-colors hover:text-navy-700">
             About Us
+          </Link>
+          <Link to="/admin" className="text-sm font-medium transition-colors hover:text-navy-700 flex items-center">
+            <Lock className="w-3 h-3 mr-1" /> Admin
           </Link>
         </nav>
 
@@ -83,6 +86,9 @@ const Navbar = () => {
                 </Link>
                 <Link to="/about" className="text-lg font-medium">
                   About Us
+                </Link>
+                <Link to="/admin" className="text-lg font-medium flex items-center">
+                  <Lock className="w-4 h-4 mr-2" /> Admin
                 </Link>
               </nav>
             </SheetContent>
