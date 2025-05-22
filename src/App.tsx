@@ -10,6 +10,9 @@ import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import AdminPage from "./pages/AdminPage";
 import NotFound from "./pages/NotFound";
+import AddressPage from "./pages/AddressPage";
+import PaymentPage from "./pages/PaymentPage";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +28,9 @@ const App = () => (
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:id" element={<ProductDetailPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/address" element={<AddressPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/payment-success" element={<PaymentSuccessPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
