@@ -35,6 +35,7 @@ const App = () => (
   <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
    <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+    
       <CartProvider>
         <Toaster />
         <Sonner />
