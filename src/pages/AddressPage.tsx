@@ -12,10 +12,14 @@ import { ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "@/context/CartContext";
 import { formatCurrency } from "@/lib/utils";
+import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const AddressPage = () => {
   const navigate = useNavigate();
   const { totalItems, totalPrice } = useCart();
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get("userId")
   
   const [addressData, setAddressData] = useState({
     fullName: "",
@@ -57,7 +61,7 @@ const AddressPage = () => {
     
     // Navigate to payment page
     toast.success("Address saved successfully!");
-    navigate("/payment");
+    navigate(`/payment?userId=${userId || "no_name"}`);
   };
 
   if (totalItems === 0) {
@@ -72,7 +76,7 @@ const AddressPage = () => {
             <CardContent className="text-center">
               <p className="mb-4">Please add some products to your cart before checkout.</p>
               <Button asChild className="bg-navy-900 hover:bg-navy-800">
-                <a href="/products">Browse Products</a>
+                <Link to={`/products?userId=${userId || "no_name"}`}>Browse Products</Link>
               </Button>
             </CardContent>
           </Card>

@@ -1,5 +1,4 @@
 
-import React from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,8 @@ import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
+import { useUser } from "@clerk/clerk-react";
+import { useSearchParams } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
@@ -15,9 +16,12 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
+  const { isSignedIn } = useUser()
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get("userId")
   
   const {
-    id,
+    _id,
     name,
     price,
     discount,
@@ -27,11 +31,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
   } = product;
 
   const displayPrice = discount ? price * (1 - discount / 100) : price;
+
+
+  const handleAddToCart = () => {
+    if(!isSignedIn){
+      window.location.href = `/sign-in`
+    }else{
+      addToCart(product, 1)
+    }
+  }
   
   return (
     <Card className="overflow-hidden border border-border group">
       <div className="relative product-card-zoom">
-        <Link to={`/products/${id}`} className="block overflow-hidden aspect-square">
+        <Link to={`/products/${_id}?userId=${userId || "no_name"}`} className="block overflow-hidden aspect-square">
           <img
             src={imageUrl}
             alt={name}
@@ -56,17 +69,17 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <div className="absolute bottom-0 left-0 right-0 p-2 translate-y-full opacity-0 transition-all duration-200 bg-white/90 group-hover:translate-y-0 group-hover:opacity-100">
           <Button 
             className="w-full bg-navy-900 hover:bg-navy-800 text-white"
-            onClick={() => addToCart(product, 1)}
+            onClick={handleAddToCart}
             disabled={!inStock}
           >
-            <ShoppingCart className="w-4 h-4 mr-2" />
+           <ShoppingCart className="w-4 h-4 mr-2" />
             Add to Cart
           </Button>
         </div>
       </div>
       
       <div className="p-3">
-        <Link to={`/products/${id}`} className="block">
+        <Link to={`/products/${_id}?userId=${userId || "no_name"}`} className="block">
           <h3 className="font-medium text-sm truncate">{name}</h3>
         </Link>
         

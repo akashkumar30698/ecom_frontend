@@ -1,9 +1,11 @@
 
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const HeroSection = () => {
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get("userId")
   return (
     <section className="relative overflow-hidden">
       <div className="bg-navy-900 text-white">
@@ -18,10 +20,10 @@ const HeroSection = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button asChild size="lg" className="bg-coral hover:bg-coral-400 text-white">
-                  <Link to="/products">Shop Now</Link>
+                  <Link to={`/products?userId=${userId || "no_name"}`}>Shop Now</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                  <Link to="/categories">Browse Categories</Link>
+                <Button asChild size="lg"  className="border-white text-white hover:bg-white/10">
+                  <Link to={`/categories?userId=${userId || "no_name"}`}>Browse Categories</Link>
                 </Button>
               </div>
             </div>

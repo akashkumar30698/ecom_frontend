@@ -5,28 +5,28 @@ export const CATEGORIES: Category[] = [
   {
     id: "graphic",
     name: "Graphic Tees",
-    imageUrl: "/images/category-graphic.jpg"
+    imageUrl: "/images/one.jpg"
   },
   {
     id: "plain",
     name: "Plain Essentials",
-    imageUrl: "/images/category-plain.jpg"
+    imageUrl: "/images/two.jpg"
   },
   {
     id: "vintage",
     name: "Vintage Collection",
-    imageUrl: "/images/category-vintage.jpg"
+    imageUrl: "/images/three.jpg"
   },
   {
     id: "limited",
     name: "Limited Edition",
-    imageUrl: "/images/category-limited.jpg"
+    imageUrl: "/images/four.jpg"
   }
 ];
 
 export const PRODUCTS: Product[] = [
   {
-    id: "p1",
+    _id: "p1",
     name: "Classic White Tee",
     description: "A timeless plain white t-shirt made from 100% organic cotton.",
     price: 24.99,
@@ -37,7 +37,7 @@ export const PRODUCTS: Product[] = [
     inStock: true
   },
   {
-    id: "p2",
+    _id: "p2",
     name: "Urban Graphic Tee",
     description: "Bold urban-inspired graphic design on a premium cotton blend.",
     price: 34.99,
@@ -49,7 +49,7 @@ export const PRODUCTS: Product[] = [
     inStock: true
   },
   {
-    id: "p3",
+    _id: "p3",
     name: "Vintage Wash Tee",
     description: "Soft pre-washed cotton with that perfect lived-in feel.",
     price: 29.99,
@@ -60,7 +60,7 @@ export const PRODUCTS: Product[] = [
     inStock: true
   },
   {
-    id: "p4",
+    _id: "p4",
     name: "Premium Pocket Tee",
     description: "Casual comfort with a stylish chest pocket detail.",
     price: 27.99,
@@ -72,7 +72,7 @@ export const PRODUCTS: Product[] = [
     inStock: true
   },
   {
-    id: "p5",
+    _id: "p5",
     name: "Artist Collab Tee",
     description: "Limited edition collaboration with renowned street artist.",
     price: 49.99,
@@ -83,7 +83,7 @@ export const PRODUCTS: Product[] = [
     inStock: true
   },
   {
-    id: "p6",
+    _id: "p6",
     name: "Eco Striped Tee",
     description: "Sustainable bamboo fabric with classic stripe pattern.",
     price: 32.99,
@@ -95,7 +95,7 @@ export const PRODUCTS: Product[] = [
     inStock: true
   },
   {
-    id: "p7",
+    _id: "p7",
     name: "Retro Logo Tee",
     description: "Vintage-inspired logo print on heavyweight cotton.",
     price: 36.99,
@@ -106,7 +106,7 @@ export const PRODUCTS: Product[] = [
     inStock: true
   },
   {
-    id: "p8",
+    _id: "p8",
     name: "Minimalist Embroidered Tee",
     description: "Simple elegance with subtle chest embroidery.",
     price: 39.99,

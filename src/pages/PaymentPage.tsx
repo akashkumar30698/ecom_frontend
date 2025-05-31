@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -8,10 +8,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ChevronRight, CreditCard, CurrencyRupee, Landmark } from "lucide-react";
+import { ChevronRight, CreditCard, Landmark } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "@/context/CartContext";
 import { formatCurrency } from "@/lib/utils";
+import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 interface ShippingAddress {
   fullName: string;
@@ -29,6 +31,8 @@ const PaymentPage = () => {
   const [paymentMethod, setPaymentMethod] = useState<string>("card");
   const [address, setAddress] = useState<ShippingAddress | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get("userId")
 
   useEffect(() => {
     // Check if address is available in localStorage
@@ -71,7 +75,7 @@ const PaymentPage = () => {
             <CardContent className="text-center">
               <p className="mb-4">Please add some products to your cart before checkout.</p>
               <Button asChild className="bg-navy-900 hover:bg-navy-800">
-                <a href="/products">Browse Products</a>
+                <Link  to={`/products?userId=${userId || "no_name"}`}>Browse Products</Link>
               </Button>
             </CardContent>
           </Card>
@@ -146,7 +150,6 @@ const PaymentPage = () => {
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="upi" id="upi" />
                       <Label htmlFor="upi" className="flex items-center">
-                        <CurrencyRupee className="w-4 h-4 mr-2" />
                         UPI Payment
                       </Label>
                     </div>

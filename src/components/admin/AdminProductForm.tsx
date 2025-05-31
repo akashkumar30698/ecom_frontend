@@ -56,55 +56,76 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
 
   const defaultValues: Partial<ProductFormValues> = product
     ? {
-        ...product,
-        sizes: product.sizes.join(", "),
-        colors: product.colors.join(", "),
-      }
+      ...product,
+      sizes: product.sizes.join(", "),
+      colors: product.colors.join(", "),
+    }
     : {
-        name: "",
-        description: "",
-        price: 0,
-        discount: 0,
-        category: "",
-        imageUrl: "",
-        inStock: true,
-        sizes: "S, M, L, XL",
-        colors: "black, white",
-      };
+      name: "",
+      description: "",
+      price: 0,
+      discount: 0,
+      category: "",
+      imageUrl: "",
+      inStock: true,
+      sizes: "S, M, L, XL",
+      colors: "black, white",
+    };
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
 
-  const onSubmit = (data: ProductFormValues) => {
-    const formattedProduct: Product = {
-      id: product?.id || uuidv4(),
-      name: data.name,
-      description: data.description,
-      price: data.price,
-      discount: data.discount || undefined,
-      category: data.category,
-      imageUrl: data.imageUrl,
-      inStock: data.inStock,
-      sizes: data.sizes.split(",").map(size => size.trim()),
-      colors: data.colors.split(",").map(color => color.trim()),
-    };
+  const onSubmit = async (data: ProductFormValues) => {
+  const formattedProduct: Product = {
+    _id: product?._id || uuidv4(),
+    name: data.name,
+    description: data.description,
+    price: data.price,
+    discount: data.discount || undefined,
+    category: data.category,
+    imageUrl: data.imageUrl,
+    inStock: data.inStock,
+    sizes: data.sizes.split(",").map(size => size.trim()),
+    colors: data.colors.split(",").map(color => color.trim()),
+  };
+
+  try {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formattedProduct),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to add product");
+    }
+
+    const result = await response.json();
+
+    toast({
+      title: "Product added",
+      description: "The product has been added successfully.",
+      variant: "default",
+    });
 
     if (onSave) {
-      onSave(formattedProduct);
+      onSave(result);
     } else {
-      toast({
-        title: "Product added",
-        description: "The product has been added successfully.",
-        variant: "default",
-      });
-    }
-    
-    if (!onSave) {
       form.reset();
     }
+  } catch (error) {
+    toast({
+      title: "Error",
+      description: (error as Error).message,
+      variant: "destructive",
+    });
+  }
   };
+
 
   return (
     <Card>
@@ -125,14 +146,14 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="category"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Category</FormLabel>
-                    <Select 
+                    <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -187,15 +208,50 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
                 name="imageUrl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Image URL</FormLabel>
+                    <FormLabel>Upload Image</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com/image.jpg" {...field} />
+                      <>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={async (e) => {
+                            const file = e.target.files?.[0];
+                            if (!file) return;
+
+                            const formData = new FormData();
+                            formData.append("file", file);
+                            formData.append("upload_preset", `${import.meta.env.VITE_UPLOAD_PRESET}`); // 🔁 Replace with your upload preset
+
+                            try {
+                              const res = await fetch(
+                                `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_NAME}/image/upload`, // 🔁 Replace with your Cloudinary cloud name
+                                {
+                                  method: "POST",
+                                  body: formData,
+                                }
+                              );
+                              const data = await res.json();
+                              field.onChange(data.secure_url); // ✅ Set imageUrl field
+                            } catch (err) {
+                              console.error("Cloudinary upload failed", err);
+                            }
+                          }}
+                        />
+                        {field.value && (
+                          <img
+                            src={field.value}
+                            alt="Uploaded preview"
+                            className="mt-2 max-h-48 rounded border"
+                          />
+                        )}
+                      </>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
+
               <FormField
                 control={form.control}
                 name="inStock"
@@ -214,7 +270,7 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="sizes"
@@ -251,10 +307,10 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea 
+                    <Textarea
                       placeholder="A timeless plain white t-shirt made from 100% organic cotton."
-                      className="min-h-[120px]" 
-                      {...field} 
+                      className="min-h-[120px]"
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

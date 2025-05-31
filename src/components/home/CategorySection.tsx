@@ -1,14 +1,16 @@
 
-import React from "react";
 import { Category } from "@/types";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 interface CategorySectionProps {
   categories: Category[];
 }
 
 const CategorySection = ({ categories }: CategorySectionProps) => {
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get("userId")
   return (
     <section className="py-12 md:py-16">
       <div className="container px-4 mx-auto">
@@ -19,7 +21,7 @@ const CategorySection = ({ categories }: CategorySectionProps) => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category) => (
-            <Link key={category.id} to={`/products?category=${category.id}`}>
+            <Link key={category.id} to={`/products?category=${category.id}&userId=${userId}`}>
               <Card className="overflow-hidden group">
                 <div className="relative h-60 product-card-zoom">
                   <img

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -214,7 +214,7 @@ const ProductFilters = ({
             <SelectValue placeholder="Default" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Default</SelectItem>
+            <SelectItem value="default">Default</SelectItem>
             <SelectItem value="price-low-to-high">Price: Low to High</SelectItem>
             <SelectItem value="price-high-to-low">Price: High to Low</SelectItem>
             <SelectItem value="newest">Newest First</SelectItem>

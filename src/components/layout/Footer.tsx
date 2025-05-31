@@ -1,8 +1,11 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const Footer = () => {
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get("userId")
   return (
     <footer className="bg-navy-900 text-white py-10 mt-16">
       <div className="container px-4 mx-auto">
@@ -20,22 +23,22 @@ const Footer = () => {
             <h4 className="font-medium mb-4 text-gray-100">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-sm text-gray-300 hover:text-white transition-colors">
+                <Link to={`/?userId=${userId || "no_name"}`} className="text-sm text-gray-300 hover:text-white transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/products" className="text-sm text-gray-300 hover:text-white transition-colors">
+                <Link to={`/products?userId=${userId || "no_name"}`} className="text-sm text-gray-300 hover:text-white transition-colors">
                   Shop All
                 </Link>
               </li>
               <li>
-                <Link to="/categories" className="text-sm text-gray-300 hover:text-white transition-colors">
+                <Link to={`/categories?userId=${userId || "no_name"}`} className="text-sm text-gray-300 hover:text-white transition-colors">
                   Categories
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-sm text-gray-300 hover:text-white transition-colors">
+                <Link to={`/about?userId=${userId || "no_name"}`} className="text-sm text-gray-300 hover:text-white transition-colors">
                   About Us
                 </Link>
               </li>
@@ -47,22 +50,22 @@ const Footer = () => {
             <h4 className="font-medium mb-4 text-gray-100">Customer Care</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/contact" className="text-sm text-gray-300 hover:text-white transition-colors">
+                <Link to="#" className="text-sm text-gray-300 hover:text-white transition-colors">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-sm text-gray-300 hover:text-white transition-colors">
+                <Link to="#" className="text-sm text-gray-300 hover:text-white transition-colors">
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link to="/shipping" className="text-sm text-gray-300 hover:text-white transition-colors">
+                <Link to="#" className="text-sm text-gray-300 hover:text-white transition-colors">
                   Shipping & Returns
                 </Link>
               </li>
               <li>
-                <Link to="/size-guide" className="text-sm text-gray-300 hover:text-white transition-colors">
+                <Link to="#" className="text-sm text-gray-300 hover:text-white transition-colors">
                   Size Guide
                 </Link>
               </li>

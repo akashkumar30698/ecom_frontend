@@ -6,6 +6,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCart } from "@/context/CartContext";
 import CartItem from "./CartItem";
 import { formatCurrency } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -14,6 +16,13 @@ interface CartDrawerProps {
 
 const CartDrawer = ({ isOpen, setIsOpen }: CartDrawerProps) => {
   const { cartItems, totalItems, totalPrice, clearCart } = useCart();
+  const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get("userId")
+
+  const handleProceedCheckout = () => {
+    navigate(`/checkout?userId=${userId}`)
+  }
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -58,7 +67,7 @@ const CartDrawer = ({ isOpen, setIsOpen }: CartDrawerProps) => {
             <ScrollArea className="flex-1 pt-4">
               <div className="space-y-4 pr-3">
                 {cartItems.map((item) => (
-                  <CartItem key={`${item.product.id}-${item.selectedSize}-${item.selectedColor}`} item={item} />
+                  <CartItem key={`${item.product._id}-${item.selectedSize}-${item.selectedColor}`} item={item} />
                 ))}
               </div>
             </ScrollArea>
@@ -80,7 +89,7 @@ const CartDrawer = ({ isOpen, setIsOpen }: CartDrawerProps) => {
               </div>
               
               <div className="space-y-2">
-                <Button className="w-full bg-navy-900 hover:bg-navy-800">
+                <Button onClick={handleProceedCheckout} className="w-full bg-navy-900 hover:bg-navy-800">
                   Proceed to Checkout
                 </Button>
                 <div className="flex items-center justify-between">

@@ -1,13 +1,16 @@
 
-import React from "react";
 import { Product } from "@/types";
 import ProductGrid from "../products/ProductGrid";
+import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 interface FeaturedProductsProps {
   products: Product[];
 }
 
 const FeaturedProducts = ({ products }: FeaturedProductsProps) => {
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get("userId")
   return (
     <section className="py-12 bg-gray-50">
       <div className="container px-4 mx-auto">
@@ -19,12 +22,12 @@ const FeaturedProducts = ({ products }: FeaturedProductsProps) => {
         <ProductGrid products={products} />
         
         <div className="mt-8 text-center">
-          <a 
-            href="/products" 
+          <Link 
+            to={`/products?userId=${userId || "no_name"}`} 
             className="text-navy-900 font-medium hover:text-navy-700 underline-offset-4 hover:underline"
           >
             View All Products
-          </a>
+          </Link>
         </div>
       </div>
     </section>

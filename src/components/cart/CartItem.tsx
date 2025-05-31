@@ -1,5 +1,4 @@
 
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { CartItem as CartItemType } from "@/types";
 import { Trash2, Plus, Minus } from "lucide-react";
@@ -16,14 +15,14 @@ const CartItem = ({ item }: CartItemProps) => {
 
   const handleQuantityDecrease = () => {
     if (quantity > 1) {
-      updateQuantity(product.id, quantity - 1);
+      updateQuantity(product._id, quantity - 1);
     } else {
-      removeFromCart(product.id);
+      removeFromCart(product._id);
     }
   };
 
   const handleQuantityIncrease = () => {
-    updateQuantity(product.id, quantity + 1);
+    updateQuantity(product._id, quantity + 1);
   };
 
   const displayPrice = product.discount
@@ -55,7 +54,7 @@ const CartItem = ({ item }: CartItemProps) => {
             variant="ghost"
             size="icon"
             className="h-8 w-8"
-            onClick={() => removeFromCart(product.id)}
+            onClick={() => removeFromCart(product._id)}
           >
             <Trash2 className="h-4 w-4" />
             <span className="sr-only">Remove</span>

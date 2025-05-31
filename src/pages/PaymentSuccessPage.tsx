@@ -1,15 +1,17 @@
 
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 
 const PaymentSuccessPage = () => {
   const navigate = useNavigate();
-  const orderNumber = `ORDER${Math.floor(100000 + Math.random() * 900000)}`;
+  const [searchParams] = useSearchParams()
+  const userId = searchParams.get("userId")
+ const orderNumber = `ORDER${Math.floor(100000 + Math.random() * 900000)}`;
   
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -33,13 +35,13 @@ const PaymentSuccessPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 className="bg-navy-900 hover:bg-navy-800"
-                onClick={() => navigate("/")}
+                onClick={() => navigate(`/?userId=${userId || "no_name"}`)}
               >
                 Continue Shopping
               </Button>
               <Button
                 variant="outline"
-                onClick={() => navigate("/products")}
+                onClick={() => navigate(`/products?userId=${userId || "no_name"}`)}
               >
                 Browse More Products
               </Button>

@@ -1,56 +1,59 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import { Pencil, Trash } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import { Product } from "@/types";
-import { PRODUCTS } from "@/data/mockData";
 import AdminProductForm from "./AdminProductForm";
 
 const AdminProductList = () => {
   const { toast } = useToast();
-  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  const [products, setProducts] = useState<Product[]>([]);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  const handleDeleteProduct = (id: string) => {
-    setProducts(products.filter(product => product.id !== id));
-    toast({
-      title: "Product deleted",
-      description: "The product has been removed successfully.",
-      variant: "default",
-    });
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products`);
+      setProducts(res.data);
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to fetch products", variant: "destructive" });
+    }
   };
 
-  const handleUpdateProduct = (updatedProduct: Product) => {
-    setProducts(products.map(p => p.id === updatedProduct.id ? updatedProduct : p));
-    setEditingProduct(null);
-    toast({
-      title: "Product updated",
-      description: "The product has been updated successfully.",
-      variant: "default",
-    });
+  const handleDeleteProduct = async (id: string) => {
+    try {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`);
+      fetchProducts();
+      toast({ title: "Product deleted", description: "Successfully deleted." });
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete product", variant: "destructive" });
+    }
   };
+
+  const handleUpdateProduct = async (updatedProduct: Product) => {
+    try {
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/products/${updatedProduct._id}`, updatedProduct);
+      fetchProducts();
+      setEditingProduct(null);
+      toast({ title: "Updated", description: "Product updated successfully." });
+    } catch (error) {
+      toast({ title: "Error", description: "Update failed", variant: "destructive" });
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   if (editingProduct) {
     return (
@@ -80,7 +83,7 @@ const AdminProductList = () => {
         </TableHeader>
         <TableBody>
           {products.map((product) => (
-            <TableRow key={product.id}>
+            <TableRow key={product._id}>
               <TableCell>
                 <img 
                   src={product.imageUrl} 
@@ -101,11 +104,7 @@ const AdminProductList = () => {
                 )}
               </TableCell>
               <TableCell className="text-right space-x-2">
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  onClick={() => setEditingProduct(product)}
-                >
+                <Button size="sm" variant="outline" onClick={() => setEditingProduct(product)}>
                   <Pencil className="h-4 w-4" />
                 </Button>
                 <AlertDialog>
@@ -118,14 +117,13 @@ const AdminProductList = () => {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This will permanently delete the product "{product.name}". 
-                        This action cannot be undone.
+                        This will permanently delete "{product.name}".
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction 
-                        onClick={() => handleDeleteProduct(product.id)}
+                        onClick={() => handleDeleteProduct(product._id)}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       >
                         Delete

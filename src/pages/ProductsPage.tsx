@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -7,21 +7,38 @@ import ProductFilters from "@/components/products/ProductFilters";
 import ProductGrid from "@/components/products/ProductGrid";
 import { Button } from "@/components/ui/button";
 import { FilterOptions, Product } from "@/types";
-import { PRODUCTS } from "@/data/mockData";
 import { Filter } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import axios from "axios";
 
 const ProductsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(PRODUCTS);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(null);
   const [filters, setFilters] = useState<FilterOptions>({});
   
   // Extract unique categories from products
-  const categories = Array.from(new Set(PRODUCTS.map((product) => product.category)));
+ // const categories = Array.from(new Set(PRODUCTS.map((product) => product.category)));
+   const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getAllProducts`);
+        setFeaturedProducts(res?.data);
+      } catch (error) {
+        console.error("Error fetching featured products:", error);
+      }
+    };
+
+    fetchFeatured();
+  }, []);
+
+  const categories = Array.from(new Set(featuredProducts.map((product) => product.category)));
+
   
   // Apply filters
   useEffect(() => {
-    let result = [...PRODUCTS];
+    let result = [...featuredProducts];
     
     // Apply category filter from URL or state
     const categoryParam = searchParams.get("category");
@@ -140,7 +157,7 @@ const ProductsPage = () => {
             
             {/* Products */}
             <div>
-              <ProductGrid products={filteredProducts} />
+              <ProductGrid products={featuredProducts} />
             </div>
           </div>
         </div>
