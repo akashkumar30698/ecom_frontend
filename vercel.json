@@ -1,5 +1,18 @@
 {
   "rewrites": [
+    { "source": "/", "destination": "/" },
+    { "source": "/products", "destination": "/" },
+    { "source": "/products/:id", "destination": "/" },
+    { "source": "/admin", "destination": "/" },
+    { "source": "/address", "destination": "/" },
+    { "source": "/payment", "destination": "/" },
+    { "source": "/categories", "destination": "/" },
+    { "source": "/:userId/payment-success", "destination": "/" },
+    { "source": "/:userId/payment-failure", "destination": "/" },
+    { "source": "/checkout", "destination": "/" },
+    { "source": "/about", "destination": "/" },
+    { "source": "/sign-in", "destination": "/" },
+    { "source": "/sign-up", "destination": "/" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
