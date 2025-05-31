@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { useUser } from "@clerk/clerk-react";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +29,7 @@ const ProductDetailPage = () => {
   const { isSignedIn } = useUser()
   const [searchParams] = useSearchParams()
   const userId = searchParams.get("userId")
+  const navigate = useNavigate()
 
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -120,7 +122,7 @@ const ProductDetailPage = () => {
     }
 
     if (!isSignedIn) {
-      window.location.href = `/sign-in`;
+       navigate('/sign-in', { replace: true })
       return;
     }
 

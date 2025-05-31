@@ -9,6 +9,7 @@ import { formatCurrency } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import { useUser } from "@clerk/clerk-react";
 import { useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface ProductCardProps {
   product: Product;
@@ -18,6 +19,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
   const { isSignedIn } = useUser()
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const userId = searchParams.get("userId")
   
   const {
@@ -35,7 +37,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   const handleAddToCart = () => {
     if(!isSignedIn){
-      window.location.href = `/sign-in`
+     navigate('/sign-in', { replace: true })
     }else{
       addToCart(product, 1)
     }
