@@ -18,17 +18,20 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { FilterOptions } from "@/types";
+import axios from "axios";
 import { CATEGORIES } from "@/data/mockData";
 
 interface ProductFiltersProps {
   categories: string[];
   onFilterChange: (filters: FilterOptions) => void;
+  setFeaturedProduct: (product) => void; // Replace `any` with appropriate product type
   className?: string;
 }
 
 const ProductFilters = ({
   categories,
   onFilterChange,
+  setFeaturedProduct,
   className = "",
 }: ProductFiltersProps) => {
   const [category, setCategory] = useState<string>("");
@@ -49,24 +52,40 @@ const ProductFilters = ({
     setColors((prev) => ({ ...prev, [color]: checked }));
   };
   
-  const handleApplyFilters = () => {
-    const selectedSizes = Object.entries(sizes)
-      .filter(([_, checked]) => checked)
-      .map(([size]) => size);
-      
-    const selectedColors = Object.entries(colors)
-      .filter(([_, checked]) => checked)
-      .map(([color]) => color);
-    
-    onFilterChange({
-      category: category || undefined,
-      minPrice: priceRange[0],
-      maxPrice: priceRange[1],
-      sizes: selectedSizes.length > 0 ? selectedSizes : undefined,
-      colors: selectedColors.length > 0 ? selectedColors : undefined,
-      sortBy: sortBy as any || undefined,
-    });
+  const handleApplyFilters = async () => {
+  const selectedSizes = Object.entries(sizes)
+    .filter(([_, checked]) => checked)
+    .map(([size]) => size);
+
+  const selectedColors = Object.entries(colors)
+    .filter(([_, checked]) => checked)
+    .map(([color]) => color);
+
+  const filters = {
+    category: category || undefined,
+    minPrice: priceRange[0],
+    maxPrice: priceRange[1],
+    sizes: selectedSizes.length > 0 ? selectedSizes : undefined,
+    colors: selectedColors.length > 0 ? selectedColors : undefined,
+    sortBy: sortBy as any || undefined,
   };
+
+  // Trigger UI updates first (if needed)
+  onFilterChange(filters);
+
+  try {
+    const response = await axios.get('/api/products/filtered', {
+      params: filters,
+      withCredentials: true, // if you're using cookies
+    });
+    
+    console.log("Filtered Products:", response.data);
+    setFeaturedProduct(response.data)
+    // optionally update product list with response.data
+  } catch (error) {
+    console.error("Error fetching filtered products:", error);
+  }
+};
   
   const handleResetFilters = () => {
     setCategory("");

@@ -140,6 +140,7 @@ const ProductsPage = () => {
                 <ProductFilters
                   categories={categories}
                   onFilterChange={handleFilterChange}
+                  setFeaturedProduct={setFeaturedProducts}
                   className="py-4"
                 />
               </SheetContent>
@@ -152,6 +153,7 @@ const ProductsPage = () => {
               <ProductFilters
                 categories={categories}
                 onFilterChange={handleFilterChange}
+                setFeaturedProduct={setFeaturedProducts}
               />
             </aside>
             
