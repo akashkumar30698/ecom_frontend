@@ -74,13 +74,21 @@ const ProductFilters = ({
   onFilterChange(filters);
 
   try {
-    const response = await axios.get('/api/products/filtered', {
+    const response = await axios.get('/api/filtered', {
       params: filters,
       withCredentials: true, // if you're using cookies
     });
     
+    
+    if (
+      typeof response.data === 'string' &&
+      response.data.includes('<!DOCTYPE html>')
+    ) {
+      throw new Error('Received HTML instead of JSON. Check API route.');
+    }
+
     console.log("Filtered Products:", response.data);
-    setFeaturedProduct(response.data)
+    setFeaturedProduct(response.data);
     // optionally update product list with response.data
   } catch (error) {
     console.error("Error fetching filtered products:", error);
