@@ -25,7 +25,7 @@ const CategorySection = ({ categories }: CategorySectionProps) => {
               <Card className="overflow-hidden group">
                 <div className="relative h-60 product-card-zoom">
                   <img
-                    src={"#"}
+                    src={category.imageUrl}
                     alt={category.name}
                     loading="lazy"
                     className="h-full w-full object-cover"
