@@ -98,7 +98,7 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
     name: data.name,
     description: data.description,
     price: data.price,
-    discount: data.discount || undefined,
+    discount: data.discount || 0,
     category: data.category,
     imageUrl: data.imageUrl,
     inStock: data.inStock,
