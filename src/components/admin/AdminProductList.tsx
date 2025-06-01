@@ -17,7 +17,7 @@ import { Product } from "@/types";
 import AdminProductForm from "./AdminProductForm";
 
 interface ProductExtra {
-  searchByUniqueId: string
+  searchByUniqueId?: string | null
   name: string;
   description: string;
   price: number;
@@ -32,7 +32,7 @@ interface ProductExtra {
 const AdminProductList = () => {
   const { toast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editingProduct, setEditingProduct] = useState<ProductExtra | null>(null);
 
   const fetchProducts = async () => {
     try {

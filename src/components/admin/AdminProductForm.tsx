@@ -46,13 +46,13 @@ const formSchema = z.object({
 type ProductFormValues = z.infer<typeof formSchema>;
 
 interface AdminProductFormProps {
-  product?: Product;
+  product?: ProductExtra;
   onSave?: (product: ProductExtra) => void;
   onCancel: () => void;
 }
 
 interface ProductExtra {
-  searchByUniqueId: string
+  searchByUniqueId?: string
   name: string;
   description: string;
   price: number;
@@ -90,9 +90,11 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
     defaultValues,
   });
 
-  const onSubmit = async (data: ProductFormValues) => {
+ const onSubmit = async (data: ProductFormValues) => {
+  const isEdit = Boolean(product ? true : false); // true if editing
+
   const formattedProduct: ProductExtra = {
-    searchByUniqueId: uuidv4(),
+    searchByUniqueId: isEdit ? product?.searchByUniqueId : uuidv4() ,
     name: data.name,
     description: data.description,
     price: data.price,
@@ -105,23 +107,26 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
   };
 
   try {
-    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formattedProduct),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/products${isEdit ? `/${formattedProduct.searchByUniqueId}` : ""}`,
+      {
+        method: isEdit ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formattedProduct),
+      }
+    );
 
     if (!response.ok) {
-      throw new Error("Failed to add product");
+      throw new Error(isEdit ? "Failed to update product" : "Failed to add product");
     }
 
     const result = await response.json();
 
     toast({
-      title: "Product added",
-      description: "The product has been added successfully.",
+      title: isEdit ? "Product updated" : "Product added",
+      description: `The product has been ${isEdit ? "updated" : "added"} successfully.`,
       variant: "default",
     });
 
@@ -137,7 +142,8 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
       variant: "destructive",
     });
   }
-  };
+};
+
 
 
   return (
