@@ -47,11 +47,12 @@ type ProductFormValues = z.infer<typeof formSchema>;
 
 interface AdminProductFormProps {
   product?: Product;
-  onSave?: (product: Product) => void;
+  onSave?: (product: ProductExtra) => void;
   onCancel: () => void;
 }
 
 interface ProductExtra {
+  searchByUniqueId: string
   name: string;
   description: string;
   price: number;
@@ -91,6 +92,7 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
 
   const onSubmit = async (data: ProductFormValues) => {
   const formattedProduct: ProductExtra = {
+    searchByUniqueId: uuidv4(),
     name: data.name,
     description: data.description,
     price: data.price,

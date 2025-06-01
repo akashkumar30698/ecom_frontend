@@ -16,6 +16,19 @@ import { formatCurrency } from "@/lib/utils";
 import { Product } from "@/types";
 import AdminProductForm from "./AdminProductForm";
 
+interface ProductExtra {
+  searchByUniqueId: string
+  name: string;
+  description: string;
+  price: number;
+  discount?: number;
+  category: string;
+  imageUrl: string;
+  sizes: string[];
+  colors: string[];
+  inStock: boolean;
+}
+
 const AdminProductList = () => {
   const { toast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
@@ -40,9 +53,9 @@ const AdminProductList = () => {
     }
   };
 
-  const handleUpdateProduct = async (updatedProduct: Product) => {
+  const handleUpdateProduct = async (updatedProduct: ProductExtra) => {
     try {
-      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/products/${updatedProduct._id}`, updatedProduct);
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/products/${updatedProduct.searchByUniqueId}`, updatedProduct);
       fetchProducts();
       setEditingProduct(null);
       toast({ title: "Updated", description: "Product updated successfully." });
