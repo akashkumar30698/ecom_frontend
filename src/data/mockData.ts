@@ -5,22 +5,22 @@ export const CATEGORIES: Category[] = [
   {
     id: "graphic",
     name: "Graphic Tees",
-    imageUrl: "/images/one.jpg"
+    imageUrl: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&w=400&q=80"
   },
   {
     id: "plain",
     name: "Plain Essentials",
-    imageUrl: "/images/two.jpg"
+    imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80"
   },
   {
     id: "vintage",
     name: "Vintage Collection",
-    imageUrl: "/images/three.jpg"
+    imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=400&q=80"
   },
   {
     id: "limited",
     name: "Limited Edition",
-    imageUrl: "/images/four.jpg"
+    imageUrl: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=400&q=80"
   }
 ];
 
