@@ -27,6 +27,7 @@ const CategorySection = ({ categories }: CategorySectionProps) => {
                   <img
                     src={category.imageUrl}
                     alt={category.name}
+                    loading="lazy"
                     className="h-full w-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">

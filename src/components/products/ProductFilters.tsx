@@ -142,10 +142,10 @@ const ProductFilters = ({
                 />
                 <div className="flex justify-between mt-2">
                   <span className="text-sm">
-                    ${priceRange[0]}
+                    ₹{priceRange[0]}
                   </span>
                   <span className="text-sm">
-                    ${priceRange[1]}+
+                    ₹{priceRange[1]}+
                   </span>
                 </div>
               </div>

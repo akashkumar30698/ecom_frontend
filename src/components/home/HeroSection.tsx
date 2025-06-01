@@ -49,7 +49,7 @@ const HeroSection = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="p-2">
               <h3 className="text-sm font-medium">Free Shipping</h3>
-              <p className="text-xs text-gray-600">On orders over $50</p>
+              <p className="text-xs text-gray-600">On orders over ₹50</p>
             </div>
             <div className="p-2">
               <h3 className="text-sm font-medium">Easy Returns</h3>
