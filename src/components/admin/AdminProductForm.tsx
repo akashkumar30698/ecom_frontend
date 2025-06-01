@@ -51,6 +51,18 @@ interface AdminProductFormProps {
   onCancel: () => void;
 }
 
+interface ProductExtra {
+  name: string;
+  description: string;
+  price: number;
+  discount?: number;
+  category: string;
+  imageUrl: string;
+  sizes: string[];
+  colors: string[];
+  inStock: boolean;
+}
+
 const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) => {
   const { toast } = useToast();
 
@@ -78,8 +90,7 @@ const AdminProductForm = ({ product, onSave, onCancel }: AdminProductFormProps) 
   });
 
   const onSubmit = async (data: ProductFormValues) => {
-  const formattedProduct: Product = {
-    _id: product?._id || uuidv4(),
+  const formattedProduct: ProductExtra = {
     name: data.name,
     description: data.description,
     price: data.price,
